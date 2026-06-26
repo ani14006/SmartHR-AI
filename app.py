@@ -112,8 +112,12 @@ def load_embeddings():
                             face_crop = img[fy:fy+fh, fx:fx+fw].copy()
                             face_rgb = cv2.cvtColor(face_crop, cv2.COLOR_BGR2RGB)
                         else:
-                            face_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                            
+                            # No face found in the registered photo — skip this employee.
+                            # Using the full image would produce an embedding that never matches
+                            # live face crops, causing permanent UNKNOWN PERSON for this employee.
+                            print(f"[load_embeddings] No face detected in photo for {name} ({emp_id}), skipping.")
+                            continue
+
                         # Precompute representation using DeepFace (VGG-Face model by default)
                         resp = DeepFace.represent(img_path=face_rgb, model_name="VGG-Face", enforce_detection=False, detector_backend="skip")
                         if resp and len(resp) > 0:
@@ -468,9 +472,26 @@ def api_register():
                 with open(photo_path, "wb") as f:
                     f.write(data)
                     
+        # Validate that the uploaded image contains exactly one face
+        if photo_path:
+            _val_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+            _val_img = cv2.imread(photo_path)
+            if _val_img is None:
+                if os.path.exists(photo_path):
+                    os.remove(photo_path)
+                return jsonify({"success": False, "message": "Could not read the uploaded image. Please try again."}), 400
+            _val_gray = cv2.cvtColor(_val_img, cv2.COLOR_BGR2GRAY)
+            _val_faces = _val_cascade.detectMultiScale(_val_gray, 1.3, 5)
+            if len(_val_faces) == 0:
+                os.remove(photo_path)
+                return jsonify({"success": False, "message": "No face detected in the image. Please upload a clear, well-lit frontal face photo."}), 400
+            if len(_val_faces) > 1:
+                os.remove(photo_path)
+                return jsonify({"success": False, "message": "Multiple faces detected. Please upload an image with only one face."}), 400
+
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        
+
         cursor.execute("SELECT 1 FROM employees WHERE employee_id = ?", (emp_id,))
         exists = cursor.fetchone()
         
@@ -504,6 +525,9 @@ def api_live_status():
     return jsonify({
         "current_detection": current_ai_status["current_detection"],
         "recognized_person": current_ai_status["recognized_person"],
+        "employee_id": current_ai_status["employee_id"],
+        "name": current_ai_status["name"],
+        "department": current_ai_status["department"],
         "confidence": f"{current_ai_status['confidence']}%",
         "detected_objects": current_ai_status["detected_objects"],
         "status": current_ai_status["status"],

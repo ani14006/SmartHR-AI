@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartHR AI — Register Employee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="app-container">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">S</div>
+      <span class="brand-name">SmartHR AI</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="menu-item">
+        <a href="/">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Dashboard
+        </a>
+      </li>
+      <li class="menu-item active">
+        <a href="/register">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+          Register Employee
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="/recognition">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          Live AI Terminal
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="/attendance">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+          Attendance Log
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="/settings">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Settings
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-header">
+      <div class="header-title">
+        <h1>Register Employee</h1>
+        <p>Add a new employee and capture their face for recognition</p>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1000px;">
+
+      <!-- Employee Details Form -->
+      <div class="glass-card">
+        <h3 style="font-size:1rem; margin-bottom:20px;">Employee Details</h3>
+        <form id="register-form">
+          <div class="form-group">
+            <label class="form-label">Employee ID *</label>
+            <input type="text" name="employee_id" class="form-control" placeholder="e.g. EMP001" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" name="name" class="form-control" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <select name="department" class="form-control">
+              <option value="">Select Department</option>
+              <option value="Engineering">Engineering</option>
+              <option value="HR">HR</option>
+              <option value="Finance">Finance</option>
+              <option value="Sales">Sales</option>
+              <option value="Operations">Operations</option>
+              <option value="Marketing">Marketing</option>
+              <option value="IT">IT</option>
+              <option value="Management">Management</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" placeholder="john@company.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" name="phone" class="form-control" placeholder="+1 234 567 8900">
+          </div>
+          <!-- Hidden field for webcam image -->
+          <input type="hidden" name="webcam_image" id="webcam_image_input">
+
+          <div style="display:flex; gap:12px; margin-top:8px;">
+            <button type="submit" class="btn btn-primary" id="save-btn">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Save Employee
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Face Capture -->
+      <div class="glass-card">
+        <h3 style="font-size:1rem; margin-bottom:16px;">Face Image Capture</h3>
+
+        <!-- Webcam preview area -->
+        <div class="webcam-preview" id="preview-box">
+          <video id="webcam-video" style="width:100%; height:100%; object-fit:cover; display:none;" autoplay muted playsinline></video>
+          <img id="captured-img" style="width:100%; height:100%; object-fit:cover; display:none;" alt="Captured face">
+          <div id="preview-placeholder" style="color:var(--text-secondary); font-size:0.875rem; text-align:center; padding:20px;">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48" style="opacity:0.3; margin:0 auto 8px; display:block;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Camera preview will appear here
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-secondary" onclick="startWebcam()">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Open Camera
+          </button>
+          <button type="button" class="btn btn-primary" id="capture-btn" onclick="capturePhoto()" style="display:none;">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Capture Photo
+          </button>
+          <button type="button" class="btn btn-secondary" id="retake-btn" onclick="retakePhoto()" style="display:none;">
+            Retake
+          </button>
+        </div>
+
+        <div style="margin-top:16px; border-top:1px solid var(--border-color); padding-top:16px;">
+          <label class="form-label">Or Upload Image File</label>
+          <input type="file" id="file-input" name="image" class="form-control" accept="image/*" onchange="previewFile(this)">
+        </div>
+
+        <div id="face-status" style="margin-top:12px; font-size:0.85rem; color:var(--text-secondary);"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+<script src="/static/js/app.js"></script>
+<script>
+  let webcamStream = null;
+
+  async function startWebcam() {
+    try {
+      webcamStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+      const video = document.getElementById('webcam-video');
+      video.srcObject = webcamStream;
+      video.style.display = 'block';
+      document.getElementById('captured-img').style.display = 'none';
+      document.getElementById('preview-placeholder').style.display = 'none';
+      document.getElementById('capture-btn').style.display = 'inline-flex';
+      document.getElementById('retake-btn').style.display = 'none';
+      document.getElementById('webcam_image_input').value = '';
+    } catch (err) {
+      showToast('Could not access camera: ' + err.message, 'error');
+    }
+  }
+
+  function capturePhoto() {
+    const video = document.getElementById('webcam-video');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const imageData = canvas.toDataURL('image/jpeg', 0.92);
+    document.getElementById('webcam_image_input').value = imageData;
+
+    const img = document.getElementById('captured-img');
+    img.src = imageData;
+    img.style.display = 'block';
+    video.style.display = 'none';
+    document.getElementById('capture-btn').style.display = 'none';
+    document.getElementById('retake-btn').style.display = 'inline-flex';
+
+    // Stop stream
+    if (webcamStream) {
+      webcamStream.getTracks().forEach(t => t.stop());
+      webcamStream = null;
+    }
+
+    // Clear file input so webcam image is used
+    document.getElementById('file-input').value = '';
+    document.getElementById('face-status').textContent = 'Photo captured. Face will be validated on save.';
+    document.getElementById('face-status').style.color = 'var(--accent-green)';
+  }
+
+  function retakePhoto() {
+    document.getElementById('captured-img').style.display = 'none';
+    document.getElementById('retake-btn').style.display = 'none';
+    document.getElementById('webcam_image_input').value = '';
+    document.getElementById('face-status').textContent = '';
+    startWebcam();
+  }
+
+  function previewFile(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = document.getElementById('captured-img');
+        img.src = e.target.result;
+        img.style.display = 'block';
+        document.getElementById('webcam-video').style.display = 'none';
+        document.getElementById('preview-placeholder').style.display = 'none';
+        document.getElementById('capture-btn').style.display = 'none';
+        document.getElementById('retake-btn').style.display = 'none';
+        document.getElementById('webcam_image_input').value = '';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('save-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    const formData = new FormData(e.target);
+
+    // If file input has a file, let it be sent as 'image'. If webcam was used, send as 'webcam_image'.
+    // If both present, file takes priority (file input is included automatically in FormData).
+    // If only webcam image: file input is empty, webcam_image field is populated.
+
+    try {
+      const res = await fetch('/api/register', { method: 'POST', body: formData });
+      const data = await res.json();
+
+      if (data.success) {
+        showToast(data.message, 'success');
+        e.target.reset();
+        document.getElementById('captured-img').style.display = 'none';
+        document.getElementById('preview-placeholder').style.display = 'block';
+        document.getElementById('retake-btn').style.display = 'none';
+        document.getElementById('capture-btn').style.display = 'none';
+        document.getElementById('face-status').textContent = '';
+      } else {
+        showToast(data.message, 'error');
+      }
+    } catch (err) {
+      showToast('Registration failed: ' + err.message, 'error');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Save Employee';
+  });
+</script>
+</body>
+</html>
