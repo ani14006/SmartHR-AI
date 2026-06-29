@@ -12,10 +12,15 @@ from deepface import DeepFace
 
 app = Flask(__name__)
 
-# Configuration & Paths
-DB_PATH = "database/smarthr.db"
-IMAGE_DIR = "database"
+# Configuration & Paths — override with env vars for cloud deployment
+# On Railway: set DATABASE_DIR to a mounted volume path for persistent storage
+IMAGE_DIR = os.environ.get("DATABASE_DIR", "database")
+DB_PATH = os.path.join(IMAGE_DIR, "smarthr.db")
 MODEL_PATH = "models/yolov8n.pt"
+
+# Face recognition model: Facenet (92 MB) is used for web/cloud deployment.
+# Switch to VGG-Face for higher accuracy if RAM > 2 GB is available.
+FACE_MODEL = os.environ.get("FACE_MODEL", "Facenet")
 
 # Global System Settings
 app_settings = {
@@ -119,7 +124,7 @@ def load_embeddings():
                             continue
 
                         # Precompute representation using DeepFace (VGG-Face model by default)
-                        resp = DeepFace.represent(img_path=face_rgb, model_name="VGG-Face", enforce_detection=False, detector_backend="skip")
+                        resp = DeepFace.represent(img_path=face_rgb, model_name=FACE_MODEL, enforce_detection=False, detector_backend="skip")
                         if resp and len(resp) > 0:
                             emb = resp[0]["embedding"]
                             new_embeddings[emp_id] = {
@@ -142,7 +147,18 @@ except Exception as e:
     yolo_model.save(MODEL_PATH)
 
 init_db()
-load_embeddings()
+
+def _startup_load():
+    """Load face embeddings in a background thread so the app starts immediately.
+    DeepFace downloads its model (~90-530 MB) on the first call, which would
+    block Railway's health-check and cause a startup timeout if run synchronously."""
+    try:
+        load_embeddings()
+        print("[startup] Face embeddings loaded successfully.")
+    except Exception as e:
+        print(f"[startup] Warning — could not load embeddings: {e}")
+
+threading.Thread(target=_startup_load, daemon=True).start()
 
 # Face recognition background thread function
 def perform_face_recognition(face_img):
@@ -150,7 +166,7 @@ def perform_face_recognition(face_img):
     try:
         # Get embedding of the detected face (convert BGR to RGB first)
         face_rgb = cv2.cvtColor(face_img, cv2.COLOR_BGR2RGB)
-        resp = DeepFace.represent(img_path=face_rgb, model_name="VGG-Face", enforce_detection=False, detector_backend="skip")
+        resp = DeepFace.represent(img_path=face_rgb, model_name=FACE_MODEL, enforce_detection=False, detector_backend="skip")
         if not resp or len(resp) == 0:
             return
         
@@ -329,6 +345,10 @@ def generate_frames():
     camera.release()
 
 # Web Application Routes
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok", "embeddings_loaded": len(employee_embeddings)})
 
 @app.route('/')
 def index():
@@ -731,4 +751,6 @@ def api_process_frame():
         return jsonify({"success": False, "message": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    port = int(os.environ.get("PORT", 5001))
+    debug = os.environ.get("FLASK_DEBUG", "0") == "1"
+    app.run(host='0.0.0.0', port=port, debug=debug)
